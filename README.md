@@ -16,4 +16,5 @@ Throw this in a boot script to use it:
     nohup $(bash /path/to/harddrive-spindown 1200 /dev/sde) &> /dev/null &
     
 $1 is seconds to keep idle
+
 $2 is the disk to keep idle

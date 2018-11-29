@@ -1,0 +1,75 @@
+#! /bin/bash
+#set -x
+# this script sets how long a drive takes to park its head and spin down.
+# Goal is to have 'green' drives not get so many LCCs while balancing power-on hours.
+# On days I have off, stay spun up between 7 and 24 
+# Days I work, 250 second spin-time
+# Nights I work, 250 second spin-time
+# 0 = sunday
+# 6 = saturday
+
+secondsAlive=${1}
+device=${2}
+#daysOfWeek=(0 1 2 3 4 5 6)
+nowDay=$(/usr/bin/date +%w)
+nowHour=$(/usr/bin/date +%H)
+keepOnDays=(1 2) 
+keepOnHours=(7 23)
+
+# Takes the amount of seconds to keep drive on,
+# takes length of time in seconds as ${1}
+# takes device for keeping alive as ${2}
+liveOn(){
+    timeSeconds=${1}
+    device=${2}
+    nOfRuns=$(( $timeSeconds / 5 ))
+    runThis="/usr/sbin/smartctl -a ${device} | grep Load_Cycle_Count"
+    while : ; do
+	[[ $timeSeconds == 'skip' ]] && $('/usr/sbin/smartctl' -a ${device} | grep Load_Cycle_Count) && sleep 5 && return 0
+        [[ $nOfRuns -le 0 ]] && return 0
+	[[ $nOfRuns -gt 0 ]] && $('/usr/sbin/smartctl' -a ${device} | grep Load_Cycle_Count)
+	nOfRuns=$(( $nOfRuns - 1 )) && sleep 5
+    done
+}
+
+# Find out if it is a keep-on day
+# timeChecker $currentday $keepOnDays
+# timeChecker $currentHours $keepOnHours
+timeChecker(){
+    timeSpan=(${2}) 
+    currentTime=${1}
+    # is now an always-on-time? if so, true
+    [[ ${currentTime} -ge ${timeSpan[0]} ]] && [[ ${currentTime} -le ${timeSpan[-1]} ]] && true
+    false
+}
+
+# checks to see if device is in use by check iostat's '%util'(lization) statistic for non-zero.
+# checks once a second.
+# this method is just resource intensive enough to make me not like it, I've found. I need my numbers LOWER.
+inUse(){
+    device=${1}
+    statdevice=$(iostat -sxyd 1 1 ${device} | awk '/sd/ { print $8 }' | grep -v 0.00)
+    [[ $statdevice ]] && true
+}
+
+# Checks to see what mode it should be run in
+isKeepOn(){
+    secondsAlive=${1}
+    device=${2}
+    isDay="timeChecker \"$(echo ${nowDay[@]})\" \"$(echo ${keepOnDays[@]})\"" 
+    isHour="timeChecker \"$(echo ${nowHour[@]})\" \"$(echo ${keepOnHours[@]})\""
+    
+    [[ $(isDay) == true ]] && [[ $(isHour) == true ]] && true
+    false
+}
+
+# starts things
+start(){
+    isKeepOn $secondsAlive $device && liveOn false ${device}
+    liveOn ${secondsAlive} ${device}
+}
+
+# checks if it's up and starts the processes if it is
+while : ; do
+    inUse $device && start $secondsAlive $device
+done 

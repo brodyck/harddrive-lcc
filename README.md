@@ -13,7 +13,7 @@ Interesting to note: I removed all 'if' statements, opting for '&&', because wit
 
 Throw this in a boot script to use it:
 
-    nohup $(bash /path/to/harddrive-spindown 1200 /dev/sde) &> /dev/null &
+    nohup $(bash /path/to/harddrive-spindown $1 $2) &> /dev/null &
     
 $1 is seconds to keep idle
 

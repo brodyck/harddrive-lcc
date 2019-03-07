@@ -7,7 +7,15 @@ Script that stops any hard drive head from parking (idle) for a specified amount
 
 **Solution:** Ask for S.M.A.R.T. data before the head parks, continuously. Works for any drive that has S.M.A.R.T. stuff built in. Actual amount of seconds kept alive vary from drive to drive. 
 
-And why not put it on a timer.
+And why not put it on a timer to set high-usage days?
+
+---
+
+In the script, in an array, you can:
+Specify days of the week (0 to 6)
+Specify hours of the day (0 to 23)
+
+And it will keep the drive on for the seconds specified between the hours specified on the days specified.
 
 ---
 

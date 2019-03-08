@@ -11,11 +11,13 @@ And why not put it on a timer to set high-usage days?
 
 ---
 
+It's a mess to read, but:
+
 In the script, in an array, you can:  
 - Specify days of the week (0 to 6)  
 - Specify hours of the day (0 to 23)  
 
-And it will keep the drive on for the seconds specified between the hours specified on the days specified.
+And it will keep the drive on between the hours of the day on the days specified after first access, then only for the amount of seconds specified during the times that aren't specified.
 
 ---
 

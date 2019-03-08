@@ -11,8 +11,6 @@ And why not put it on a timer to set high-usage days?
 
 ---
 
-It's a mess to read, but:
-
 In the script, in an array, you can:  
 - Specify days of the week (0 to 6)  
 - Specify hours of the day (0 to 23)  

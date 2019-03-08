@@ -5,7 +5,7 @@ Script that stops any hard drive head from parking (idle) for a specified amount
 
 **Idea:** Asking for S.M.A.R.T. data puts any drive into active mode and unparks the head.
 
-**Solution:** Ask for S.M.A.R.T. data before the head parks, continuously. Works for any drive that has S.M.A.R.T. stuff built in. Actual amount of seconds kept alive vary from drive to drive. 
+**Solution:** Ask for S.M.A.R.T. data before the head parks, continuously. Works for any drive that has S.M.A.R.T. stuff built in. Actual amount of seconds kept alive vary from drive to drive. My Seagate drive parks after 13 seconds, my WD drive parks after 8.
 
 And why not put it on a timer to set high-usage days?
 

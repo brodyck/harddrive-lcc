@@ -1,7 +1,7 @@
 # harddrive-lcc
 Script that stops any hard drive head from parking (idle) for a specified amount of time.
 
-**Problem:** Green and consumer drives that aren't high-end have a head-park time of between 8 and 13 seconds.
+**Problem:** Green and consumer drives that aren't high-end have a head-park time of between 8 and 13 seconds. This decreases access time by a lot, and there's a 'life-span' amount of times that this can happen before the likelyhood of an issue developing increases.
 
 **Idea:** Asking for S.M.A.R.T. data puts any drive into active mode and unparks the head.
 
